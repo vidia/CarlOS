@@ -6,6 +6,7 @@
 # - Creates backup (.bak) of original files
 # - Removes './' from <path> tags  
 # - Simplifies XML header to <?xml version="1.0"?>
+# - Replaces self-closing tags with empty tags
 # - Processes all gamelist.xml files in ../../Roms and subfolders
 
 # Base directory to search from (relative to script location)
@@ -25,6 +26,10 @@ find "$ROMS_DIR" -type f -name "gamelist.xml" | while read -r file; do
     # <?xml version="1.0" standalone="yes"?>
     # Result: <?xml version="1.0"?>
     sed -i 's|<?xml version="1.0"[^>]*?>|<?xml version="1.0"?>|g' "$file"
+
+    # 3. Clean XML self-closing empty tags
+    # Replaces <foo /> with <foo></foo>
+    sed -i 's|<\([a-zA-Z0-9]*\) */>|<\1></\1>|g' "$file"
     
     echo "Successfully modified: $file"
 done
