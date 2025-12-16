@@ -15,6 +15,9 @@ ROMS_DIR="$(dirname "$0")/../../Roms"
 # Find and process all gamelist.xml files
 find "$ROMS_DIR" -type f -name "gamelist.xml" | while read -r file; do
     echo "Processing: $file"
+
+    # 0. Create a backup of the original file before continuing.
+    cp "$file" "$file.bak"
     
     # 1. Fix path tags: remove './' prefix from ROM paths
     # Converts <path>./game.gb</path> to <path>game.gb</path>
